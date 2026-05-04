@@ -102,6 +102,17 @@ jobs:
           cache-from: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
 
+      - name: Update upstream hash
+        if: needs.check-upstream.outputs.upstream_changed == 'true'
+        run: |
+          UPSTREAM_HASH=$(git ls-remote "$UPSTREAM_REPO" "$UPSTREAM_BRANCH" | awk '{print $1}')
+          echo "$UPSTREAM_HASH" > .upstream-hash
+          git config user.name "Gitea Actions"
+          git config user.email "actions@gitea.local"
+          git add .upstream-hash
+          git commit -m "chore: update upstream hash to ${UPSTREAM_HASH:0:8}"
+          git push origin HEAD:main
+
   mirror:
     name: Mirror to GitHub
     runs-on: [linux]
