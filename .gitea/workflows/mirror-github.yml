@@ -7,17 +7,17 @@ on:
 
 jobs:
   mirror:
-    runs-on: [self-hosted, rocm]
+    runs-on: [self-hosted, linux]
     steps:
       - name: Cleanup
-        run: rm -rf /tmp/llama-cpp-nvidia-tq-mirror
+        run: rm -rf /tmp/llama-cpp-vulkan-tq-mirror
 
       - name: Checkout
         run: |
-          git clone "${{ vars.GITEA_URL }}/mkadrlik/llama-cpp-nvidia-tq.git" /tmp/llama-cpp-nvidia-tq-mirror
+          git clone "${{ vars.GITEA_URL }}/mkadrlik/llama-cpp-vulkan-tq.git" /tmp/llama-cpp-vulkan-tq-mirror
 
       - name: Push to GitHub
         run: |
-          cd /tmp/llama-cpp-nvidia-tq-mirror
-          git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-nvidia-tq.git" 2>/dev/null || true
+          cd /tmp/llama-cpp-vulkan-tq-mirror
+          git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-vulkan-tq.git" 2>/dev/null || true
           git push github main --tags

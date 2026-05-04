@@ -23,14 +23,14 @@ on:
 env:
   REGISTRY: 192.168.50.11:5000
   GHCR_REGISTRY: ghcr.io
-  IMAGE_NAME: mkadrlik/llama-cpp-nvidia-tq
+  IMAGE_NAME: mkadrlik/llama-cpp-vulkan-tq
   UPSTREAM_REPO: https://github.com/TheTom/llama-cpp-turboquant.git
   UPSTREAM_BRANCH: feature/turboquant-kv-cache
 
 jobs:
   check-upstream:
     name: Check Upstream Updates
-    runs-on: [self-hosted, nvidia]
+    runs-on: [self-hosted, linux]
     outputs:
       upstream_changed: ${{ steps.check.outputs.changed }}
     steps:
@@ -61,7 +61,7 @@ jobs:
 
   build:
     name: Build and Push Docker Image
-    runs-on: [self-hosted, nvidia]
+    runs-on: [self-hosted, linux]
     needs: check-upstream
     if: >
       github.event_name == 'push' ||
@@ -110,7 +110,7 @@ jobs:
 
   mirror:
     name: Mirror to GitHub
-    runs-on: [self-hosted, nvidia]
+    runs-on: [self-hosted, linux]
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -121,5 +121,5 @@ jobs:
 
       - name: Push to GitHub
         run: |
-          git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-nvidia-tq.git" 2>/dev/null || true
+          git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-vulkan-tq.git" 2>/dev/null || true
           git push github main --tags --force-with-lease
