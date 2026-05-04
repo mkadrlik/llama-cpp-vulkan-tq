@@ -7,7 +7,7 @@ on:
 
 jobs:
   mirror:
-    runs-on: [self-hosted, linux]
+    runs-on: [linux]
     steps:
       - name: Cleanup
         run: rm -rf /tmp/llama-cpp-vulkan-tq-mirror

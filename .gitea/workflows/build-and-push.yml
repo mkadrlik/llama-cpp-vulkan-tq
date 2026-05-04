@@ -30,7 +30,7 @@ env:
 jobs:
   check-upstream:
     name: Check Upstream Updates
-    runs-on: [self-hosted, linux]
+    runs-on: [linux]
     outputs:
       upstream_changed: ${{ steps.check.outputs.changed }}
     steps:
@@ -61,7 +61,7 @@ jobs:
 
   build:
     name: Build and Push Docker Image
-    runs-on: [self-hosted, linux]
+    runs-on: [linux]
     needs: check-upstream
     if: >
       github.event_name == 'push' ||
@@ -110,7 +110,7 @@ jobs:
 
   mirror:
     name: Mirror to GitHub
-    runs-on: [self-hosted, linux]
+    runs-on: [linux]
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
