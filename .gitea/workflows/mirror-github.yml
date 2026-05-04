@@ -19,5 +19,5 @@ jobs:
       - name: Push to GitHub
         run: |
           cd /tmp/llama-cpp-nvidia-tq-mirror
-          git remote add github "https://${{ secrets.GITHUB_TOKEN }}@github.com/mkadrlik/llama-cpp-nvidia-tq.git" 2>/dev/null || true
+          git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-nvidia-tq.git" 2>/dev/null || true
           git push github main --tags
