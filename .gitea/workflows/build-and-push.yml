@@ -48,12 +48,6 @@ jobs:
           if [ "$UPSTREAM_HASH" != "$LAST_HASH" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "Upstream changed: $LAST_HASH -> $UPSTREAM_HASH"
-            echo "$UPSTREAM_HASH" > .upstream-hash
-            git config user.name "Gitea Actions"
-            git config user.email "actions@gitea.local"
-            git add .upstream-hash
-            git commit -m "chore: update upstream hash to ${UPSTREAM_HASH:0:8}"
-            git push origin HEAD:main
           else
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No upstream changes detected"

@@ -9,15 +9,12 @@ jobs:
   mirror:
     runs-on: [linux]
     steps:
-      - name: Cleanup
-        run: rm -rf /tmp/llama-cpp-vulkan-tq-mirror
-
       - name: Checkout
-        run: |
-          git clone "${{ vars.GITEA_URL }}/mkadrlik/llama-cpp-vulkan-tq.git" /tmp/llama-cpp-vulkan-tq-mirror
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Push to GitHub
         run: |
-          cd /tmp/llama-cpp-vulkan-tq-mirror
           git remote add github "https://${{ secrets.GHCR_TOKEN }}@github.com/mkadrlik/llama-cpp-vulkan-tq.git" 2>/dev/null || true
-          git push github main --tags
+          git push github main --tags --force-with-lease
