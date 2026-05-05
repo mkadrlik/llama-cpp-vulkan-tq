@@ -19,9 +19,7 @@ on:
 # Required repository secrets:
 #   GHCR_USERNAME  — GitHub username (e.g. mkadrlik)
 #   GHCR_TOKEN     — GitHub PAT with write:packages + repo scopes
-
 env:
-  REGISTRY: 192.168.50.11:5000
   GHCR_REGISTRY: ghcr.io
   IMAGE_NAME: mkadrlik/llama-cpp-vulkan-tq
   UPSTREAM_REPO: https://github.com/TheTom/llama-cpp-turboquant.git
@@ -87,15 +85,12 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Build and push to both registries
+      - name: Build and push to ghcr.io
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }},
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.date_version }},
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,
             ${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }},
             ${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.date_version }},
             ${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
