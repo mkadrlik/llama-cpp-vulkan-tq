@@ -7,7 +7,7 @@ on:
 
 jobs:
   mirror:
-    runs-on: [linux]
+    runs-on: [self-hosted, linux]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
