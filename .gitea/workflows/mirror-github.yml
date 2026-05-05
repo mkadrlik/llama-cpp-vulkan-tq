@@ -14,6 +14,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Exclude .gitea from mirror
+        run: |
+          rm -rf .gitea/
+          git add -A
+          git commit --allow-empty -m "ci: exclude .gitea from GitHub mirror" || true
+
       - name: Push to GitHub
         run: |
           git remote remove github 2>/dev/null || true
