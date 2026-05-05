@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'fix/*' ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -103,7 +103,7 @@ jobs:
           cache-to: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
 
       - name: Update upstream hash
-        if: needs.check-upstream.outputs.upstream_changed == 'true'
+        if: needs.check-upstream.outputs.upstream_changed == 'true' && github.ref == 'refs/heads/main'
         run: |
           UPSTREAM_HASH=$(git ls-remote "$UPSTREAM_REPO" "$UPSTREAM_BRANCH" | awk '{print $1}')
           echo "$UPSTREAM_HASH" > .upstream-hash
@@ -111,7 +111,7 @@ jobs:
           git config user.email "actions@gitea.local"
           git add .upstream-hash
           git commit -m "chore: update upstream hash to ${UPSTREAM_HASH:0:8}"
-          git push origin HEAD:main
+          git push origin HEAD
 
   mirror:
     name: Mirror to GitHub
