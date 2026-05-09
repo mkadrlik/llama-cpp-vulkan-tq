@@ -22,7 +22,7 @@ on:
 env:
   IMAGE: ghcr.io/mkadrlik/llama-cpp-vulkan-tq
   UPSTREAM_REPO: https://github.com/AmesianX/TurboQuant.git
-  UPSTREAM_BRANCH: master
+  UPSTREAM_BRANCH: main
 
 jobs:
   validate-commits:
